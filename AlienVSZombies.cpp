@@ -10,6 +10,7 @@
 
 #include <iostream>
 #include <string>
+#include <fstream>
 #include <vector>
 #include <cstdlib>
 #include <ctime>
@@ -251,13 +252,13 @@ char Alien::getch() const
     return ch_;
 }
 
-// let's there is a array that holds the life and attacks attributes of the aliens and also the upcoming zombies (not initialised yet)
+// let's there is a array that holds the life and attacks attributes of the aliens and also the upcoming zombies (zombies are not initialised yet)
 
 void LifeAttackDisplay()
 {
     const int size = 4;
 
-    int ValuesTable[size] = {};  // [alien life, alien attack, zombie1 life, zombie 1 attacks, zombie1 life, zombie2 attacks ... zombie n life, zombie n attacks]
+    int ValuesTable[size] = {};  // [alien life, alien attack, zombie 1 life, zombie 1 attacks, zombie 1 life, zombie 2 attacks ... zombie n life, zombie n attacks]
 
     ValuesTable[0] = 100;
     ValuesTable[1] = 0;
@@ -265,6 +266,62 @@ void LifeAttackDisplay()
     cout << "Alien    : " << "Life :" << " " << ValuesTable[0] << " , " << "Attack:" << " " << ValuesTable[1] << " " << endl;
     //cout << "Zombie 1 : " << "Life :" << " " << "life" << " " << "Attack:" << " " << "attack" << " " << endl;
     //cout << "Zombie 2 : " << "Life :" << " " << "life" << " " << "Attack:" << " " << "attack" << " " << endl;
+}
+
+// saving and loading function for the game
+
+void save_game(string file_name) {
+    ofstream file;
+    file.open(file_name);
+
+    string data_to_save;
+    cout << "Enter the data to save in the file: ";
+    getline(cin, data_to_save);
+
+    file << data_to_save;
+    file.close();
+
+    cout << "Data saved successfully in the file: " << file_name << endl;
+}
+
+void load_game(string file_name) {
+    ifstream file;
+    file.open(file_name);
+
+    string loaded_data;
+    while (getline(file, loaded_data)) {
+        cout << loaded_data << endl;
+    }
+
+    file.close();
+    cout << "Data loaded successfully from the file: " << file_name << endl;
+}
+
+void Saved_CurrentGame() {
+    cout << "Enter the name of the game file: ";
+    string file_name;
+    cin >> file_name;
+
+    cout << "Do you want to save the ongoing game (y/n)? ";
+    char save_choice;
+    cin >> save_choice;
+
+    if (save_choice == 'y') {
+        save_game(file_name);
+    } 
+}
+
+void LoadMenu() {
+    cout << "Do you want to load a game (y/n)? ";
+    char load_choice;
+    cin >> load_choice;
+
+    if (load_choice == 'y') {
+        cout << "Enter the name of the game file: ";
+        string file_name;
+        cin >> file_name;
+        load_game(file_name);
+    }
 }
 
 void Run(Maps &board,Alien attack)
@@ -277,6 +334,7 @@ void Run(Maps &board,Alien attack)
     //attack.moveLeft(maps);
     //attack.moveRight(maps);
     //maps.display();
+    Saved_CurrentGame();
 }
 int mainMenu()
 {
@@ -286,7 +344,7 @@ int mainMenu()
     cout << " ::==::==::==::==::==::==::==::==::" << endl << endl;
     cout << "Please pick an option below:       " << endl;
     cout << "1. Play the Game                   " << endl;
-    cout << "2. Load File *not yet available*   " << endl;
+    cout << "2. Load File                       " << endl;
     cout << "3. Settings                        " << endl;
     cout << "4. Quit                            " << endl << endl;
     cout << " ::==::==::==::==::==::==::==::==::" << endl;
@@ -381,6 +439,10 @@ void mainLoop(Maps &board,Alien attack)
         {
         case 1:
             Run(board,attack);
+            temp = false;
+            break;
+        case 2:
+            LoadMenu();
             temp = false;
             break;
         case 3:
