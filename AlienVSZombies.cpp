@@ -251,10 +251,27 @@ char Alien::getch() const
     return ch_;
 }
 
+// let's there is a array that holds the life and attacks attributes of the aliens and also the upcoming zombies (not initialised yet)
+
+void LifeAttackDisplay()
+{
+    const int size = 4;
+
+    int ValuesTable[size] = {};  // [alien life, alien attack, zombie1 life, zombie 1 attacks, zombie1 life, zombie2 attacks ... zombie n life, zombie n attacks]
+
+    ValuesTable[0] = 100;
+    ValuesTable[1] = 0;
+
+    cout << "Alien    : " << "Life :" << " " << ValuesTable[0] << " , " << "Attack:" << " " << ValuesTable[1] << " " << endl;
+    //cout << "Zombie 1 : " << "Life :" << " " << "life" << " " << "Attack:" << " " << "attack" << " " << endl;
+    //cout << "Zombie 2 : " << "Life :" << " " << "life" << " " << "Attack:" << " " << "attack" << " " << endl;
+}
+
 void Run(Maps &board,Alien attack)
 {
     attack.start(board);
     board.display();
+    LifeAttackDisplay();
     //attack.moveUp(maps);
     //attack.moveDown(maps);
     //attack.moveLeft(maps);
