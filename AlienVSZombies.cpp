@@ -43,14 +43,15 @@ class Alien
 private:
     int x_, y_;
     char ch_;
+    int dimX_,dimY_;
 public:
     Alien();
-    int dimX = 15, dimY =5;
     void start(Maps &maps);
     void moveUp(Maps &maps);
     void moveDown(Maps &maps);
     void moveLeft(Maps &maps);
     void moveRight(Maps &maps);
+    void changeDim(int dimX,int dimY);
 
     int getX() const;
     int getY() const;
@@ -184,20 +185,23 @@ void Maps::removeObjectRight(int x, int y, char ch)
 }
 
 Alien::Alien()
-{}
+{
+    dimX_ = 15;
+    dimY_ = 5;
+}
 
 void Alien::start(Maps &maps)
 {
     char ch_= 'A';
-    x_ = double(dimX) /2 +1;
-    y_ = double(dimY) /2 +1;
+    x_ = double(dimX_) /2 +1;
+    y_ = double(dimY_) /2 +1;
     maps.setObject(x_, y_, ch_);
 }
 void Alien::moveUp(Maps &maps)
 {
     Alien alien;
     char ch_ ='A';
-    while (y_< dimY)
+    while (y_< dimY_)
     {
         y_ = ++y_;
         maps.setObject(x_, y_, ch_);
@@ -230,14 +234,18 @@ void Alien::moveRight(Maps &maps)
 {
     Alien alien;
     char ch_ ='A';
-    while (x_< dimX)
+    while (x_< dimX_)
     {
         x_ = ++x_;
         maps.setObject(x_, y_, ch_);
         maps.removeObjectRight(x_, y_, ch_);
     }
 }
-
+void Alien::changeDim(int dimX, int dimY)
+{
+    dimX_ = dimX;
+    dimY_ = dimY;
+}
 int Alien::getX() const
 {
     return x_;
@@ -358,7 +366,7 @@ int mainMenu()
     return pick;
 }
 
-void changeSettings(Maps &board)
+void changeSettings(Maps &board,Alien &attack)
 {
     int row;
     int column;
@@ -399,9 +407,10 @@ void changeSettings(Maps &board)
         }
     }
     board.changeDim(column,row);
+    attack.changeDim(column,row);
     cout << endl << "Settings Updated !!" << endl;
 }
-void settingsMenu(Maps &board)
+void settingsMenu(Maps &board,Alien &attack)
 {
     bool temp = true;
     char pick;
@@ -422,7 +431,7 @@ void settingsMenu(Maps &board)
         {
         case 'Y':
             temp = false;
-            changeSettings(board);
+            changeSettings(board,attack);
             break;
         case 'N':
             temp = false;
@@ -453,7 +462,7 @@ void mainLoop(Maps &board,Alien attack)
             break;
             
         case 3:
-            settingsMenu(board);
+            settingsMenu(board,attack);
             cout << endl;
             break;
 
