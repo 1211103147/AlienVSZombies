@@ -444,18 +444,23 @@ void mainLoop(Maps &board,Alien attack)
         {
         case 1:
             Run(board,attack);
-            temp = false;
+            cout << endl;
             break;
+            
         case 2:
             LoadMenu();
-            temp = false;
+            cout << endl;
             break;
+            
         case 3:
             settingsMenu(board);
+            cout << endl;
             break;
+
         case 4:
             temp = false;
             break;
+
         default:
             cout << "Invalid Option.." << endl;
             break;
