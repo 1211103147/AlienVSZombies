@@ -268,7 +268,7 @@ void LifeAttackDisplay()
     //cout << "Zombie 2 : " << "Life :" << " " << "life" << " " << "Attack:" << " " << "attack" << " " << endl;
 }
 
-// saving and loading function for the game
+// saving the game
 
 void save_game(string file_name) {
     ofstream file;
@@ -284,6 +284,8 @@ void save_game(string file_name) {
     cout << "Data saved successfully in the file: " << file_name << endl;
 }
 
+// loading the game
+
 void load_game(string file_name) {
     ifstream file;
     file.open(file_name);
@@ -297,19 +299,22 @@ void load_game(string file_name) {
     cout << "Data loaded successfully from the file: " << file_name << endl;
 }
 
-void Saved_CurrentGame() {
-    cout << "Enter the name of the game file: ";
-    string file_name;
-    cin >> file_name;
+// saving the progress in game
 
+void Saved_CurrentGame() {
     cout << "Do you want to save the ongoing game (y/n)? ";
     char save_choice;
     cin >> save_choice;
 
     if (save_choice == 'y') {
+        cout << "Enter the name of the game file: ";
+        string file_name;
+        cin >> file_name;
         save_game(file_name);
     } 
 }
+
+// loading the previously saved game
 
 void LoadMenu() {
     cout << "Do you want to load a game (y/n)? ";
