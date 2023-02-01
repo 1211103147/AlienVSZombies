@@ -4,7 +4,7 @@ Alien vs Zombie is a simplified, text-based version of the game named Alien Path
 
 ![Alien vs Zombie Gameplay](gameplay.png)
 
-Please provide the YouTube link to your [Video Demo](https://youtube.com).
+[Video Demo](https://youtu.be/gNlyIeWqJGU).
 
 ## Compilation Instructions
 
@@ -16,7 +16,7 @@ g++ AlienVSZombies.cpp -o game
 
 ## User Manual
 
-Please provide the user manual on how to use your program.
+Run the .exe file. You'll have 4 options which are play the game, load file, change settings, and quit.
 
 ## Progress Log
 
