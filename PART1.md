@@ -11,15 +11,15 @@ Please provide the YouTube link to your [Video Demo](https://youtube.com).
 
 1. Generate Game Board
 2. Main Menu
+3. Save/Load
 
 ### To Do
 
-1. Load/Save File
-2. Alien Behavior
-3. Zombie Behaviour
-4. Game Object Behaviour
-5. Life and Attack Display
-6. Explaination Messages During Gameplay
+1. Alien Behavior
+2. Zombie Behaviour
+3. Game Object Behaviour
+4. Life and Attack Display
+5. Explaination Messages During Gameplay
 
 
 ## Additional Features
@@ -44,7 +44,8 @@ uhh none yet..
 
 1. Generate the display of Alien and Zombie Life and Attack
 2. Initialised the Alien's Life and Attacks Attributes
-3. Created the explaination video for Part 1
+3. Made the Save/Load Properties for the Game
+3. Created the Explaination Video for Part 1
 
 
 ## Problems Encountered & Solutions
