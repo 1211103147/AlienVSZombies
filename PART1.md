@@ -42,8 +42,9 @@ uhh none yet..
 
 ### MOHD AZRIY AKMALHAZIM BIN MOHD NAZARIEE
 
-1. 
-2. *add more*
+1. Generate the display of Alien and Zombie Life and Attack
+2. Initialised the Alien's Life and Attacks Attributes
+3. Created the explaination video for Part 1
 
 
 ## Problems Encountered & Solutions
