@@ -45,7 +45,8 @@ uhh none yet..
 1. Generate the display of Alien and Zombie Life and Attack
 2. Initialised the Alien's Life and Attacks Attributes
 3. Made the Save/Load Properties for the Game
-3. Created the Explaination Video for Part 1
+4. Created the Explaination Video for Part 1
+5. Helping on Correcting the Main Loop 
 
 
 ## Problems Encountered & Solutions
