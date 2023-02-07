@@ -277,6 +277,39 @@ void LifeAttackDisplay()
 }
 
 // saving the game
+void Movement(Maps board, Alien attack)
+{
+    cout << "Movement: ";
+    char move;
+    cin >> move;
+    
+    if (move == 'w')
+    {
+        cout << "Moving Up";
+        attack.moveUp(board);
+        board.display();
+    }
+    else if (move == 's')
+    {
+        attack.moveDown(board);
+        board.display();
+    }
+    else if (move == 'a')
+    {
+        attack.moveLeft(board);
+        board.display();
+    }
+    else if (move == 'd')
+    {
+        attack.moveRight(board);
+        board.display();
+    }
+    else
+    {
+        cout << "error";
+        board.display();
+    }
+}
 
 void save_game(string file_name) {
     ofstream file;
@@ -342,12 +375,8 @@ void Run(Maps &board,Alien attack)
     attack.start(board);
     board.display();
     LifeAttackDisplay();
-    //attack.moveUp(maps);
-    //attack.moveDown(maps);
-    //attack.moveLeft(maps);
-    //attack.moveRight(maps);
-    //maps.display();
-    Saved_CurrentGame();
+    Movement(board, attack);
+    //Saved_CurrentGame();
 }
 int mainMenu()
 {
