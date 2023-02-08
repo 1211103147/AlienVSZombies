@@ -44,4 +44,4 @@ uhh none yet..
 ## Problems Encountered & Solutions
 
 1. Problem  : Alien movement error where after the initial move, the next move start from the starting position again.
-   Solution : I spent 1 hour or more just to realise I forgot to put an ampersand(&) at the alien parameter at the function oneTurn(). WASTE OF MY DAMN TIME
+   Solution : I spent 1 hour or more just to realise I forgot to put an ampersand(&) at the alien parameter at the function oneTurn().
