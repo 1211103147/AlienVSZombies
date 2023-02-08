@@ -188,28 +188,24 @@ void Maps::setObject(int x, int y, char ch)
 }
 void Maps::removeObjectUp(int x, int y, char ch)
 {
-    Alien alien;
     int delX = x;
     int delY = y - 1;
     map_[dimY_ - delY][delX - 1] = '.';
 }
 void Maps::removeObjectDown(int x, int y, char ch)
 {
-    Alien alien;
     int delX = x;
     int delY = y + 1;
     map_[dimY_ - delY][delX - 1] = '.';
 }
 void Maps::removeObjectLeft(int x, int y, char ch)
 {
-    Alien alien;
     int delX = x + 1;
     int delY = y;
     map_[dimY_ - delY][delX - 1] = '.';
 }
 void Maps::removeObjectRight(int x, int y, char ch)
 {
-    Alien alien;
     int delX = x - 1;
     int delY = y;
     map_[dimY_ - delY][delX - 1] = '.';
@@ -220,19 +216,17 @@ Alien::Alien()
     dimX_ = 15;
     dimY_ = 5;
     zomb_ = 2;
+    ch_ = 'A';
 }
 
 void Alien::start(Maps &maps)
 {
-    char ch_= 'A';
     x_ = double(dimX_) /2 +1;
     y_ = double(dimY_) /2 +1;
     maps.setObject(x_, y_, ch_);
 }
 void Alien::moveUp(Maps &maps)
 {
-    Alien alien;
-    char ch_ ='A';
     while (y_< dimY_)
     {
         y_ = ++y_;
@@ -242,8 +236,6 @@ void Alien::moveUp(Maps &maps)
 }
 void Alien::moveDown(Maps &maps)
 {
-    Alien alien;
-    char ch_ ='A';
     while (y_> 1)
     {
         y_ = --y_;
@@ -253,8 +245,6 @@ void Alien::moveDown(Maps &maps)
 }
 void Alien::moveLeft(Maps &maps)
 {
-    Alien alien;
-    char ch_ ='A';
     while (x_> 1)
     {
         x_ = --x_;
@@ -264,8 +254,6 @@ void Alien::moveLeft(Maps &maps)
 }
 void Alien::moveRight(Maps &maps)
 {
-    Alien alien;
-    char ch_ ='A';
     while (x_< dimX_)
     {
         x_ = ++x_;
@@ -313,37 +301,31 @@ void LifeAttackDisplay()
 }
 
 // saving the game
-void Movement(Maps board, Alien attack)
+void Movement(Maps &board, Alien &attack)
 {
     cout << "Movement: ";
-    char move;
+    string move;
     cin >> move;
     
-    if (move == 'w')
+    if (move.compare("up") == 0)
     {
-        cout << "Moving Up";
         attack.moveUp(board);
-        board.display();
     }
-    else if (move == 's')
+    else if (move.compare("down") == 0)
     {
         attack.moveDown(board);
-        board.display();
     }
-    else if (move == 'a')
+    else if (move.compare("left") == 0)
     {
         attack.moveLeft(board);
-        board.display();
     }
-    else if (move == 'd')
+    else if (move.compare("right") == 0)
     {
         attack.moveRight(board);
-        board.display();
     }
     else
     {
         cout << "error";
-        board.display();
     }
 }
 
@@ -406,13 +388,11 @@ void LoadMenu() {
     }
 }
 
-void Run(Maps &board,Alien attack)
+void oneTurn(Maps &board,Alien &attack)
 {
-    attack.start(board);
     board.display();
     LifeAttackDisplay();
     Movement(board, attack);
-    //Saved_CurrentGame();
 }
 int mainMenu()
 {
@@ -524,7 +504,7 @@ void settingsMenu(Maps &board,Alien &attack)
         }
     }
 }
-void mainLoop(Maps &board,Alien attack)
+void mainLoop(Maps &board,Alien &attack)
 {
     bool temp = true;
     int option;
@@ -534,8 +514,12 @@ void mainLoop(Maps &board,Alien attack)
     switch (option)
         {
         case 1:
-            Run(board,attack);
-            cout << endl;
+            attack.start(board);
+            while (true)
+            {
+                oneTurn(board,attack);
+                cout << endl;
+            }
             break;
             
         case 2:
