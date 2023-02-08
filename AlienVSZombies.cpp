@@ -38,6 +38,10 @@ public:
     void removeObjectDown(int x, int y, char ch);
     void removeObjectLeft(int x, int y, char ch);
     void removeObjectRight(int x, int y, char ch);
+    char detectObjectUp(int x,int y);
+    char detectObjectDown(int x,int y);
+    char detectObjectLeft(int x,int y);
+    char detectObjectRight(int x,int y);
 };
 
 class Alien
@@ -55,6 +59,7 @@ public:
     void moveRight(Maps &maps);
     void changeDim(int dimX,int dimY);
     void changeZomb(int zomB);
+    void objectBehaviour(Maps &maps,char object);
 
     int getX() const;
     int getY() const;
@@ -210,6 +215,30 @@ void Maps::removeObjectRight(int x, int y, char ch)
     int delY = y;
     map_[dimY_ - delY][delX - 1] = '.';
 }
+char Maps::detectObjectUp(int x, int y)
+{
+    int X = x;
+    int Y = y + 1;
+    return map_[dimY_ - Y][X - 1];
+}
+char Maps::detectObjectDown(int x, int y)
+{
+    int X = x;
+    int Y = y - 1;
+    return map_[dimY_ - Y][X - 1];
+}
+char Maps::detectObjectLeft(int x, int y)
+{
+    int X = x - 1;
+    int Y = y;
+    return map_[dimY_ - Y][X - 1];
+}
+char Maps::detectObjectRight(int x, int y)
+{
+    int X = x + 1;
+    int Y = y;
+    return map_[dimY_ - Y][X - 1];
+}
 
 Alien::Alien()
 {
@@ -229,6 +258,22 @@ void Alien::moveUp(Maps &maps)
 {
     while (y_< dimY_)
     {
+        char object = maps.detectObjectUp(x_,y_);
+        if (object == ' ' ||object == '.' ||object == '^')
+        {}
+        else if (object == 'v' ||object == '<' ||object == '>')
+        {
+            y_ = ++y_;
+            maps.setObject(x_, y_, ch_);
+            maps.removeObjectUp(x_, y_, ch_);
+            Alien::objectBehaviour(maps,object);
+            break;
+        }
+        else
+        {
+            Alien::objectBehaviour(maps,object);
+            break;
+        }
         y_ = ++y_;
         maps.setObject(x_, y_, ch_);
         maps.removeObjectUp(x_, y_, ch_);
@@ -238,6 +283,22 @@ void Alien::moveDown(Maps &maps)
 {
     while (y_> 1)
     {
+        char object = maps.detectObjectDown(x_,y_);
+        if (object == ' ' ||object == '.'||object == 'v')
+        {}
+        else if (object == '^' ||object == '<' ||object == '>')
+        {
+            y_ = --y_;
+            maps.setObject(x_, y_, ch_);
+            maps.removeObjectDown(x_, y_, ch_);
+            Alien::objectBehaviour(maps,object);
+            break;
+        }
+        else
+        {
+            Alien::objectBehaviour(maps,object);
+            break;
+        }
         y_ = --y_;
         maps.setObject(x_, y_, ch_);
         maps.removeObjectDown(x_, y_, ch_);
@@ -247,6 +308,22 @@ void Alien::moveLeft(Maps &maps)
 {
     while (x_> 1)
     {
+        char object = maps.detectObjectLeft(x_,y_);
+        if (object == ' ' ||object == '.'||object == '<')
+        {}
+        else if (object == 'v' ||object == '^' ||object == '>')
+        {
+            x_ = --x_;
+            maps.setObject(x_, y_, ch_);
+            maps.removeObjectLeft(x_, y_, ch_);
+            Alien::objectBehaviour(maps,object);
+            break;
+        }
+        else
+        {
+            Alien::objectBehaviour(maps,object);
+            break;
+        }
         x_ = --x_;
         maps.setObject(x_, y_, ch_);
         maps.removeObjectLeft(x_, y_, ch_);
@@ -256,6 +333,22 @@ void Alien::moveRight(Maps &maps)
 {
     while (x_< dimX_)
     {
+        char object = maps.detectObjectRight(x_,y_);
+        if (object == ' ' ||object == '.'||object == '>')
+        {}
+        else if (object == 'v' ||object == '<' ||object == '^')
+        {
+            x_ = ++x_;
+            maps.setObject(x_, y_, ch_);
+            maps.removeObjectRight(x_, y_, ch_);
+            Alien::objectBehaviour(maps,object);
+            break;
+        }
+        else
+        {
+            Alien::objectBehaviour(maps,object);
+            break;
+        }
         x_ = ++x_;
         maps.setObject(x_, y_, ch_);
         maps.removeObjectRight(x_, y_, ch_);
@@ -283,7 +376,32 @@ char Alien::getch() const
 {
     return ch_;
 }
-
+void Alien::objectBehaviour(Maps &board,char object)
+{
+    switch (object)
+    {
+    case '^':
+        Alien::moveUp(board);
+        break;
+    case 'v':
+        Alien::moveDown(board);
+        break;
+    case '<':
+        Alien::moveLeft(board);
+        break;
+    case '>':
+        Alien::moveRight(board);
+        break;
+    case 'h':
+        /* code */
+        break;
+    case 'r':
+        /* code */
+        break;
+    default:
+        break;
+    }
+}
 // let's there is a array that holds the life and attacks attributes of the aliens and also the upcoming zombies (zombies are not initialised yet)
 
 void LifeAttackDisplay()
@@ -545,8 +663,8 @@ void mainLoop(Maps &board,Alien &attack)
 
 int main()
 {
+    srand(time(NULL));
     Maps board;
     Alien attack;
-    srand(time(NULL));
     mainLoop(board,attack);
 }
