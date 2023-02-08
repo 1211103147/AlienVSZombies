@@ -21,15 +21,17 @@ class Maps
 {
 private:
     vector<vector<char>> map_;
-    int dimX_, dimY_, up_, down_;
+    int dimX_, dimY_, up_, down_, zomb_;
 public:
     Maps();
     void init();
     void display() const;
     void changeDim(int dimX, int dimY);
+    void changeZomb(int zomB);
 
     int getDimX() const;
     int getDimY() const;
+    int getZombCount() const;
 
     void setObject(int x, int y, char ch);
     void removeObjectUp(int x, int y, char ch);
@@ -43,7 +45,7 @@ class Alien
 private:
     int x_, y_;
     char ch_;
-    int dimX_,dimY_;
+    int dimX_,dimY_, zomb_;
 public:
     Alien();
     void start(Maps &maps);
@@ -52,16 +54,37 @@ public:
     void moveLeft(Maps &maps);
     void moveRight(Maps &maps);
     void changeDim(int dimX,int dimY);
+    void changeZomb(int zomB);
 
     int getX() const;
     int getY() const;
     char getch() const;
 };
 
+class Zombies
+{
+private:
+    int x1_, y1_;
+    int dimX_, dimY_;
+public:
+    Zombies(/* args */);
+    ~Zombies();
+};
+
+Zombies::Zombies(/* args */)
+{
+}
+
+Zombies::~Zombies()
+{
+}
+
+
 Maps::Maps()
 {
     dimX_ = 15;
     dimY_ = 5;
+    zomb_ = 2;
     init();
 }
 
@@ -84,7 +107,6 @@ void Maps::init()
         }
     }
 }
-
 void Maps::display() const
 {
     cout << " ::==::==::==::==::==::==::==::==::" << endl;
@@ -133,11 +155,16 @@ void Maps::display() const
     cout << endl
          << endl;
 }
-
 void Maps::changeDim(int dimX, int dimY)
 {
     dimX_ = dimX;
     dimY_ = dimY;
+    map_.clear();
+    init();
+}
+void Maps::changeZomb(int zomB)
+{
+    zomb_ = zomB;
     map_.clear();
     init();
 }
@@ -149,6 +176,10 @@ int Maps::getDimX() const
 int Maps::getDimY() const
 {
     return dimY_;
+}
+int Maps::getZombCount() const
+{
+    return zomb_;
 }
 
 void Maps::setObject(int x, int y, char ch)
@@ -188,6 +219,7 @@ Alien::Alien()
 {
     dimX_ = 15;
     dimY_ = 5;
+    zomb_ = 2;
 }
 
 void Alien::start(Maps &maps)
@@ -245,6 +277,10 @@ void Alien::changeDim(int dimX, int dimY)
 {
     dimX_ = dimX;
     dimY_ = dimY;
+}
+void Alien::changeZomb(int zomB)
+{
+    zomb_ = zomB;
 }
 int Alien::getX() const
 {
@@ -402,12 +438,13 @@ void changeSettings(Maps &board,Alien &attack)
     int zombie;
     bool temp1 = true;
     bool temp2 = true;
+    bool temp3 = true;
     cout << " ::==::==::==::==::==::==::==::==::" << endl;
     cout << "        Change Game Settings       " << endl;
     cout << " ::==::==::==::==::==::==::==::==::" << endl << endl;
     cout << "Board Rows      : " << board.getDimY() << endl;
     cout << "Board Columns   : " << board.getDimX() << endl;
-    cout << "Zombie Count    : *not yet available*" << endl << endl;
+    cout << "Zombie Count    : " << board.getZombCount() << endl;
     cout << " ::==::==::==::==::==::==::==::==::" << endl << endl;
     while (temp1 == true)
     {
@@ -435,8 +472,24 @@ void changeSettings(Maps &board,Alien &attack)
             temp2 = false;
         }
     }
+    while (temp3 == true)
+    {
+        cout << "Enter number of zombies (1 - 9): ";
+        cin >> zombie;
+        if (zombie > 10)
+        {
+            cout << " " << endl;
+            cout << "Number of zombie must below than 10" << endl;
+        }
+        else
+        {
+            temp3 = false;
+        }
+    }
     board.changeDim(column,row);
     attack.changeDim(column,row);
+    board.changeZomb(zombie);
+    attack.changeZomb(zombie);
     cout << endl << "Settings Updated !!" << endl;
 }
 void settingsMenu(Maps &board,Alien &attack)
@@ -448,7 +501,7 @@ void settingsMenu(Maps &board,Alien &attack)
     cout << " ::==::==::==::==::==::==::==::==::" << endl << endl;
     cout << "Board Rows      : " << board.getDimY() << endl;
     cout << "Board Columns   : " << board.getDimX() << endl;
-    cout << "Zombie Count    : *not yet available*" << endl << endl;
+    cout << "Zombie Count    : " << board.getZombCount() << endl;
     cout << " ::==::==::==::==::==::==::==::==::" << endl << endl;
     while (temp == true)
     {
