@@ -1,3 +1,4 @@
+
 // ********************************************************* 
 // Course: TCP1101 PROGRAMMING FUNDAMENTALS 
 // Year: Trimester 1, 2022/23 (T2215) 
@@ -21,11 +22,12 @@ class Maps
 {
 private:
     vector<vector<char>> map_;
-    int dimX_, dimY_, up_, down_, zomb_;
+    int dimX_, dimY_, zomb_;
 public:
     Maps();
     void init();
     void display() const;
+    
     void changeDim(int dimX, int dimY);
     void changeZomb(int zomB);
 
@@ -34,6 +36,7 @@ public:
     int getZombCount() const;
 
     void setObject(int x, int y, char ch);
+    void setZombies(int x1, int y1, char Z);
     void removeObjectUp(int x, int y, char ch);
     void removeObjectDown(int x, int y, char ch);
     void removeObjectLeft(int x, int y, char ch);
@@ -50,40 +53,41 @@ private:
     int x_, y_;
     char ch_;
     int dimX_,dimY_, zomb_;
+    int hp_, atk_;
 public:
     Alien();
     void start(Maps &maps);
+    
     void moveUp(Maps &maps);
     void moveDown(Maps &maps);
     void moveLeft(Maps &maps);
     void moveRight(Maps &maps);
+    
     void changeDim(int dimX,int dimY);
     void changeZomb(int zomB);
+    
     void objectBehaviour(Maps &maps,char object);
 
     int getX() const;
     int getY() const;
     char getch() const;
+    int getHP() const;
+    int getATK() const;
 };
 
 class Zombies
 {
 private:
     int x1_, y1_;
-    int dimX_, dimY_;
+    char Z_;
 public:
-    Zombies(/* args */);
-    ~Zombies();
+    Zombies();
+    void spawn(Maps &maps);
+
+    int getX1() const;
+    int getY1() const;
+    char getZ() const;
 };
-
-Zombies::Zombies(/* args */)
-{
-}
-
-Zombies::~Zombies()
-{
-}
-
 
 Maps::Maps()
 {
@@ -160,6 +164,7 @@ void Maps::display() const
     cout << endl
          << endl;
 }
+
 void Maps::changeDim(int dimX, int dimY)
 {
     dimX_ = dimX;
@@ -190,6 +195,10 @@ int Maps::getZombCount() const
 void Maps::setObject(int x, int y, char ch)
 {
     map_[dimY_ - y][x - 1] = ch;
+}
+void Maps::setZombies(int x1, int y1, char Z)
+{
+    map_[dimY_ - y1][x1 - 1] = Z;
 }
 void Maps::removeObjectUp(int x, int y, char ch)
 {
@@ -245,6 +254,8 @@ Alien::Alien()
     dimX_ = 15;
     dimY_ = 5;
     zomb_ = 2;
+    hp_ = 200;
+    atk_ = 0;
     ch_ = 'A';
 }
 
@@ -254,6 +265,7 @@ void Alien::start(Maps &maps)
     y_ = double(dimY_) /2 +1;
     maps.setObject(x_, y_, ch_);
 }
+
 void Alien::moveUp(Maps &maps)
 {
     while (y_< dimY_)
@@ -354,6 +366,7 @@ void Alien::moveRight(Maps &maps)
         maps.removeObjectRight(x_, y_, ch_);
     }
 }
+
 void Alien::changeDim(int dimX, int dimY)
 {
     dimX_ = dimX;
@@ -363,6 +376,7 @@ void Alien::changeZomb(int zomB)
 {
     zomb_ = zomB;
 }
+
 int Alien::getX() const
 {
     return x_;
@@ -371,11 +385,19 @@ int Alien::getY() const
 {
     return y_;
 }
-
 char Alien::getch() const
 {
     return ch_;
 }
+int Alien::getHP() const
+{
+    return hp_;
+}
+int Alien::getATK() const
+{
+    return atk_;
+}
+
 void Alien::objectBehaviour(Maps &board,char object)
 {
     switch (object)
@@ -404,16 +426,43 @@ void Alien::objectBehaviour(Maps &board,char object)
 }
 // let's there is a array that holds the life and attacks attributes of the aliens and also the upcoming zombies (zombies are not initialised yet)
 
-void LifeAttackDisplay()
+Zombies::Zombies()
 {
-    const int size = 4;
+}
 
-    int ValuesTable[size] = {};  // [alien life, alien attack, zombie 1 life, zombie 1 attacks, zombie 1 life, zombie 2 attacks ... zombie n life, zombie n attacks]
+void Zombies::spawn(Maps &maps)
+{
+    for (int i = 1; i <= maps.getZombCount(); ++i)
+    {
+        char Z_ = '0' + i ;
+        int x1_ = rand() % maps.getDimX();
+        int y1_ = rand() % maps.getDimY();
+        maps.setZombies(x1_,  y1_, Z_);
+    }
+}
 
-    ValuesTable[0] = 100;
-    ValuesTable[1] = 0;
+int Zombies::getX1() const
+{
+    return x1_;
+}
+int Zombies::getY1() const
+{
+    return y1_;
+}
+char Zombies::getZ() const
+{
+    return Z_;
+}
 
-    cout << "Alien    : " << "Life :" << " " << ValuesTable[0] << " , " << "Attack:" << " " << ValuesTable[1] << " " << endl;
+void LifeAttackDisplay(Alien &alien)
+{
+    int alienHP;
+    int alienATK;
+
+    alienHP = alien.getHP();
+    alienATK = alien.getATK();
+
+    cout << "Alien    : " << "Life :" << " " << alienHP << " , " << "Attack:" << " " << alienATK << " " << endl;
     //cout << "Zombie 1 : " << "Life :" << " " << "life" << " " << "Attack:" << " " << "attack" << " " << endl;
     //cout << "Zombie 2 : " << "Life :" << " " << "life" << " " << "Attack:" << " " << "attack" << " " << endl;
 }
@@ -506,10 +555,10 @@ void LoadMenu() {
     }
 }
 
-void oneTurn(Maps &board,Alien &attack)
+void oneTurn(Maps &board,Alien &attack,Zombies &zombies)
 {
     board.display();
-    LifeAttackDisplay();
+    LifeAttackDisplay(attack);
     Movement(board, attack);
 }
 int mainMenu()
@@ -622,7 +671,7 @@ void settingsMenu(Maps &board,Alien &attack)
         }
     }
 }
-void mainLoop(Maps &board,Alien &attack)
+void mainLoop(Maps &board,Alien &attack, Zombies& zombies)
 {
     bool temp = true;
     int option;
@@ -633,9 +682,10 @@ void mainLoop(Maps &board,Alien &attack)
         {
         case 1:
             attack.start(board);
+            zombies.spawn(board);
             while (true)
             {
-                oneTurn(board,attack);
+                oneTurn(board,attack, zombies);
                 cout << endl;
             }
             break;
@@ -666,5 +716,6 @@ int main()
     srand(time(NULL));
     Maps board;
     Alien attack;
-    mainLoop(board,attack);
+    Zombies zombies;
+    mainLoop(board,attack, zombies);
 }
