@@ -34,6 +34,7 @@ public:
     int getDimX() const;
     int getDimY() const;
     int getZombCount() const;
+    char getObject(int x,int y);
 
     void setObject(int x, int y, char ch);
     void setZombies(int x1, int y1, char Z);
@@ -194,7 +195,10 @@ int Maps::getZombCount() const
 {
     return zomb_;
 }
-
+char Maps::getObject(int x,int y)
+{
+    return map_[dimY_ - y][x - 1];
+}
 void Maps::setObject(int x, int y, char ch)
 {
     map_[dimY_ - y][x - 1] = ch;
@@ -523,34 +527,6 @@ void LifeAttackDisplay(Alien &alien)
 }
 
 // saving the game
-void Movement(Maps &board, Alien &attack)
-{
-    cout << "Movement: ";
-    string move;
-    cin >> move;
-    
-    if (move.compare("up") == 0)
-    {
-        attack.moveUp(board);
-    }
-    else if (move.compare("down") == 0)
-    {
-        attack.moveDown(board);
-    }
-    else if (move.compare("left") == 0)
-    {
-        attack.moveLeft(board);
-    }
-    else if (move.compare("right") == 0)
-    {
-        attack.moveRight(board);
-    }
-    else
-    {
-        cout << "error";
-    }
-}
-
 void save_game(string file_name) {
     ofstream file;
     file.open(file_name);
@@ -566,7 +542,6 @@ void save_game(string file_name) {
 }
 
 // loading the game
-
 void load_game(string file_name) {
     ifstream file;
     file.open(file_name);
@@ -581,7 +556,6 @@ void load_game(string file_name) {
 }
 
 // saving the progress in game
-
 void Saved_CurrentGame() {
     cout << "Do you want to save the ongoing game (y/n)? ";
     char save_choice;
@@ -596,7 +570,6 @@ void Saved_CurrentGame() {
 }
 
 // loading the previously saved game
-
 void LoadMenu() {
     cout << "Do you want to load a game (y/n)? ";
     char load_choice;
@@ -610,11 +583,131 @@ void LoadMenu() {
     }
 }
 
-void oneTurn(Maps &board,Alien &attack,Zombies &zombies)
+void Command(Maps &board, Alien &attack,bool &end)
+{
+    cout << "Command: ";
+    string command;
+    cin >> command;
+    
+    if (command.compare("up") == 0)
+    {
+        attack.moveUp(board);
+    }
+    else if (command.compare("down") == 0)
+    {
+        attack.moveDown(board);
+    }
+    else if (command.compare("left") == 0)
+    {
+        attack.moveLeft(board);
+    }
+    else if (command.compare("right") == 0)
+    {
+        attack.moveRight(board);
+    }
+    else if (command.compare("arrow") == 0)
+    {
+        bool loop = true;
+        bool loop2 = true;
+        int x,y;
+        string direction;
+        while (loop2 == true)
+        {
+            cout << "Enter Row: ";
+            cin >> y;
+            cout << "Enter Column: ";
+            cin >> x;
+            if (x > board.getDimX() || y > board.getDimY())
+            {
+                cout << "Please enter Row and Column within the board dimension." << endl << endl;
+            }
+            else if (board.getObject(x,y) != '^' && board.getObject(x,y) != 'v' && board.getObject(x,y) != '<' && board.getObject(x,y) != '>')
+            {
+                cout << "This Coordinate has no arrow." << endl << endl;
+            }
+            else
+            {
+                loop2 = false;
+            }
+        }
+        while (loop == true)
+        {
+            cout << "Enter Direction (up/down/left/right): ";
+            cin >> direction;
+            if (direction.compare("up") == 0)
+            {
+                board.setObject(x,y,'^');
+                loop = false;
+            }
+            else if (direction.compare("down") == 0)
+            {
+                board.setObject(x,y,'v');
+                loop = false;
+            }
+            else if (direction.compare("left") == 0)
+            {
+                board.setObject(x,y,'<');
+                loop = false;
+            }
+            else if (direction.compare("right") == 0)
+            {
+                board.setObject(x,y,'>');
+                loop = false;
+            }
+            else
+            {
+                cout << "Your direction input is invalid." << endl << endl;
+            }
+        }
+    }
+    else if (command.compare("help") == 0)
+    {
+        cout << "up    = Move alien upwards." << endl;
+        cout << "down  = Move alien downwards." << endl;
+        cout << "left  = Move alien towards the left." << endl;
+        cout << "right = Move alien towards the right." << endl;
+        cout << "arrow = Switch the direction of an arrow object in the game board." << endl;
+        cout << "save  = Save the current game." << endl;
+        cout << "load  = Load a saved game." << endl;
+        cout << "help  = Display and explains all the commands." << endl;
+        cout << "quit  = Quit the game." << endl;
+    }
+    else if (command.compare("save") == 0)
+    {
+        Saved_CurrentGame();
+    }
+    else if (command.compare("load") == 0)
+    {
+        LoadMenu();
+    }
+    else if (command.compare("quit") == 0)
+    {
+        char decision;
+        cout << "Are you sure you want to stop playing? (y/n)" << endl;
+        cin >> decision;
+        if (decision == 'y')
+        {
+            end = true;
+        }
+        else if (decision == 'n')
+        {}
+        else
+        {
+            cout << "Please enter either y(YES) or n(NO)." << endl;
+        }
+
+    }
+    else
+    {
+        cout << "Error, use command: help to learn about the commands.";
+    }
+}
+
+void oneTurn(Maps &board,Alien &attack,Zombies &zombies,bool &end)
 {
     board.display();
     LifeAttackDisplay(attack);
-    Movement(board, attack);
+    Command(board,attack,end);
 }
 int mainMenu()
 {
@@ -726,7 +819,7 @@ void settingsMenu(Maps &board,Alien &attack)
         }
     }
 }
-void mainLoop(Maps &board,Alien &attack, Zombies& zombies)
+void mainLoop(Maps &board,Alien &attack, Zombies& zombies,bool &end)
 {
     bool temp = true;
     int option;
@@ -738,11 +831,12 @@ void mainLoop(Maps &board,Alien &attack, Zombies& zombies)
         case 1:
             attack.start(board);
             zombies.spawn(board);
-            while (true)
+            while (end == false)
             {
-                oneTurn(board,attack, zombies);
+                oneTurn(board,attack,zombies,end);
                 cout << endl;
             }
+            temp = false;
             break;
             
         case 2:
@@ -772,5 +866,6 @@ int main()
     Maps board;
     Alien attack;
     Zombies zombies;
-    mainLoop(board,attack, zombies);
+    bool end = false;
+    mainLoop(board,attack,zombies,end);
 }
