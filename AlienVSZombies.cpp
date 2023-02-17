@@ -118,48 +118,48 @@ void Maps::init()
 }
 void Maps::display() const
 {
-    cout << " ::==::==::==::==::==::==::==::==::" << endl;
-    cout << " <= Welcome to Alien VS Zombies! =>" << endl;
-    cout << " ::==::==::==::==::==::==::==::==::" << endl;
+    cout << "   ::==::==::==::==::==::==::==::==::" << endl;
+    cout << "   <=  Alien VS Zombies Gameplay!  =>" << endl;
+    cout << "   ::==::==::==::==::==::==::==::==::" << endl;
     // for each row
     for (int i = 0; i < dimY_; ++i)
     {
-        cout << " ";
+        cout << "   ";
         for (int j = 0; j < dimX_; ++j)
         {
-            cout << "+-";
+            cout << "+-+-";
         }
         cout << "+" << endl;
-        cout << setw(1) << (dimY_ - i);
+        cout << setw(2) << (dimY_ - i);
         for (int j = 0; j < dimX_; ++j)
         {
-            cout << "|" << map_[i][j];
+            cout << " | " << map_[i][j];
         }
-        cout << "|" << endl;
+        cout << " |" << endl;
     }
 
-    cout << " ";
+    cout << "   ";
     for (int j = 0; j < dimX_; ++j)
     {
-        cout << "+-";
+        cout << "+-+-";
     }
     cout << "+" << endl;
 
-    cout << " ";
+    cout << "   ";
     for (int j = 0; j < dimX_; ++j)
     {
         int digit = (j + 1) / 10;
-        cout << " ";
+        cout << "  ";
         if (digit == 0)
-            cout << " ";
+            cout << "  ";
         else
-            cout << digit;
+            cout << digit << " ";
     }
     cout << endl;
-    cout << " ";
+    cout << "  ";
     for (int j = 0; j < dimX_; ++j)
     {
-        cout << " " << (j + 1) % 10;
+        cout << "   " << (j + 1) % 10;
     }
     cout << endl
          << endl;
