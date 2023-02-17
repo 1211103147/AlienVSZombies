@@ -65,6 +65,9 @@ public:
     
     void changeDim(int dimX,int dimY);
     void changeZomb(int zomB);
+    void changeHP(int hp);
+    void resetATK();
+    void addATK(int atk);
     
     void objectBehaviour(Maps &maps,char object);
 
@@ -281,10 +284,18 @@ void Alien::moveUp(Maps &maps)
             Alien::objectBehaviour(maps,object);
             break;
         }
+        else if (object == 'r')
+        {
+            char rock[] = {'h','p','^','v','<','>',' '};
+            int noOfObject = 7;
+            int ObjectNo = rand() % noOfObject;
+            char stuff = rock[ObjectNo];
+            maps.setObject(x_,y_+1,stuff);
+            break;
+        }
         else
         {
             Alien::objectBehaviour(maps,object);
-            break;
         }
         y_ = ++y_;
         maps.setObject(x_, y_, ch_);
@@ -306,10 +317,18 @@ void Alien::moveDown(Maps &maps)
             Alien::objectBehaviour(maps,object);
             break;
         }
+        else if (object == 'r')
+        {
+            char rock[] = {'h','p','^','v','<','>',' '};
+            int noOfObject = 7;
+            int ObjectNo = rand() % noOfObject;
+            char stuff = rock[ObjectNo];
+            maps.setObject(x_,y_-1,stuff);
+            break;
+        }
         else
         {
             Alien::objectBehaviour(maps,object);
-            break;
         }
         y_ = --y_;
         maps.setObject(x_, y_, ch_);
@@ -331,10 +350,18 @@ void Alien::moveLeft(Maps &maps)
             Alien::objectBehaviour(maps,object);
             break;
         }
+        else if (object == 'r')
+        {
+            char rock[] = {'h','p','^','v','<','>',' '};
+            int noOfObject = 7;
+            int ObjectNo = rand() % noOfObject;
+            char stuff = rock[ObjectNo];
+            maps.setObject(x_-1,y_,stuff);
+            break;
+        }
         else
         {
             Alien::objectBehaviour(maps,object);
-            break;
         }
         x_ = --x_;
         maps.setObject(x_, y_, ch_);
@@ -356,10 +383,18 @@ void Alien::moveRight(Maps &maps)
             Alien::objectBehaviour(maps,object);
             break;
         }
+        else if (object == 'r')
+        {
+            char rock[] = {'h','p','^','v','<','>',' '};
+            int noOfObject = 7;
+            int ObjectNo = rand() % noOfObject;
+            char stuff = rock[ObjectNo];
+            maps.setObject(x_+1,y_,stuff);
+            break;
+        }
         else
         {
             Alien::objectBehaviour(maps,object);
-            break;
         }
         x_ = ++x_;
         maps.setObject(x_, y_, ch_);
@@ -375,6 +410,24 @@ void Alien::changeDim(int dimX, int dimY)
 void Alien::changeZomb(int zomB)
 {
     zomb_ = zomB;
+}
+void Alien::changeHP(int hp)
+{
+    hp_ = hp_ + hp;
+    if (hp_ < 200)
+    {}
+    else if (hp_ >= 200)
+    {
+        hp_ = 200;
+    }
+}
+void Alien::resetATK()
+{
+    atk_ = 0;
+}
+void Alien::addATK(int atk)
+{
+    atk_ = atk_ + atk;
 }
 
 int Alien::getX() const
@@ -403,28 +456,30 @@ void Alien::objectBehaviour(Maps &board,char object)
     switch (object)
     {
     case '^':
+        Alien::addATK(20);
         Alien::moveUp(board);
         break;
     case 'v':
+        Alien::addATK(20);
         Alien::moveDown(board);
         break;
     case '<':
+        Alien::addATK(20);
         Alien::moveLeft(board);
         break;
     case '>':
+        Alien::addATK(20);
         Alien::moveRight(board);
         break;
     case 'h':
-        /* code */
-        break;
-    case 'r':
+        Alien::changeHP(20);
+    case 'p':
         /* code */
         break;
     default:
         break;
     }
 }
-// let's there is a array that holds the life and attacks attributes of the aliens and also the upcoming zombies (zombies are not initialised yet)
 
 Zombies::Zombies()
 {
