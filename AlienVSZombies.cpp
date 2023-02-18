@@ -85,15 +85,12 @@ private:
     int x1_, y1_, range;
     char Z_;
 public:
-    Zombies();
     void spawn(Maps &maps);
 
     int getX1() const;
     int getY1() const;
     char getZ() const;
     void move() const;
-    int getrange() const;
-    int setrange() const;
 };
 
 Maps::Maps()
@@ -208,7 +205,7 @@ void Maps::setObject(int x, int y, char ch) // set object to srand that's used
 }
 void Maps::setZombies(int x1, int y1, char Z)
 {
-    map_[dimY_ - y1][x1 - 1] = Z;
+    map_[y1 - 1][x1 - 1] = Z;
 }
 void Maps::removeObjectUp(int x, int y, char ch)
 {
@@ -290,7 +287,6 @@ void Alien::moveUp(Maps &maps)
             maps.removeObjectUp(x_, y_, ch_);
             Alien::objectBehaviour(maps,object);
             cout << "The alien is moving upward" << endl;
-            cout << "Alien's turn ended" << endl;
             break;
         }
         else if (object == 'r')
@@ -328,7 +324,6 @@ void Alien::moveDown(Maps &maps)
             maps.removeObjectDown(x_, y_, ch_);
             Alien::objectBehaviour(maps,object);
             cout << "The alien is downward" << endl;
-            cout << "Alien's turn ended" << endl;
             break;
         }
         else if (object == 'r')
@@ -366,7 +361,6 @@ void Alien::moveLeft(Maps &maps)
             maps.removeObjectLeft(x_, y_, ch_);
             Alien::objectBehaviour(maps,object);
             cout << "The alien is moving to the left" << endl;
-            cout << "Alien's turn ended"<< endl;
             break;
         }
         else if (object == 'r')
@@ -404,7 +398,6 @@ void Alien::moveRight(Maps &maps)
             maps.removeObjectRight(x_, y_, ch_);
             Alien::objectBehaviour(maps,object);
             cout << "The alien is moving to the right" << endl;
-            cout << "Alien's turn ended"<< endl;
             break;
         }
         else if (object == 'r')
@@ -485,18 +478,22 @@ void Alien::objectBehaviour(Maps &board,char object)
     case '^':
         Alien::addATK(20);
         Alien::moveUp(board);
+        cout<<"Alien meet '^' arrow and move upward" << endl;
         break;
     case 'v':
         Alien::addATK(20);
         Alien::moveDown(board);
+        cout<<"Alien meet 'v' arrow and move downward" << endl;
         break;
     case '<':
         Alien::addATK(20);
         Alien::moveLeft(board);
+        cout<<"Alien meet '<' arrow and move to the left" << endl;
         break;
     case '>':
         Alien::addATK(20);
         Alien::moveRight(board);
+        cout<<"Alien meet '>' arrow and move the right" << endl;
         break;
     case 'h':
         Alien::changeHP(20);
@@ -508,15 +505,11 @@ void Alien::objectBehaviour(Maps &board,char object)
     }
 }
 
-Zombies::Zombies()
-{
-}
-
 void Zombies::spawn(Maps &maps) // to place the zombie the in the board
 {
-    vector<vector<int>> allzombies; // vector of vectors to store the all zombies
+ vector<vector<int>> allzombies(maps.getZombCount());// vector of vectors to store the all zombies
 
-    for (int i = 1; i < maps.getZombCount(); i++) {
+    for (int i = 1; i <= maps.getZombCount(); i++) {
         vector<int> zombie; // making a vector to store x1 and y1 value of the zombies
         for (int j = 0; j < 1; j++) {
             char Z_ = '0' + i; // to determined the nth zombies
