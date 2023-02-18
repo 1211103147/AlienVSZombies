@@ -82,7 +82,7 @@ public:
 class Zombies
 {
 private:
-    int x1_, y1_;
+    int x1_, y1_, range;
     char Z_;
 public:
     Zombies();
@@ -91,6 +91,9 @@ public:
     int getX1() const;
     int getY1() const;
     char getZ() const;
+    void move() const;
+    int getrange() const;
+    int setrange() const;
 };
 
 Maps::Maps()
@@ -286,6 +289,8 @@ void Alien::moveUp(Maps &maps)
             maps.setObject(x_, y_, ch_);
             maps.removeObjectUp(x_, y_, ch_);
             Alien::objectBehaviour(maps,object);
+            cout << "The alien is moving up" << endl;
+            cout << "Alien's turn end"<< endl;
             break;
         }
         else if (object == 'r')
@@ -295,6 +300,9 @@ void Alien::moveUp(Maps &maps)
             int ObjectNo = rand() % noOfObject;
             char stuff = rock[ObjectNo];
             maps.setObject(x_,y_+1,stuff);
+            cout << "The alien is moving up" << endl;
+            cout << "The alien is stopped by a rock."<< endl;
+            cout << "Alien's turn end"<< endl;
             break;
         }
         else
@@ -319,6 +327,8 @@ void Alien::moveDown(Maps &maps)
             maps.setObject(x_, y_, ch_);
             maps.removeObjectDown(x_, y_, ch_);
             Alien::objectBehaviour(maps,object);
+            cout << "The alien is moving down" << endl;
+            cout << "Alien's turn end"<< endl;
             break;
         }
         else if (object == 'r')
@@ -328,6 +338,9 @@ void Alien::moveDown(Maps &maps)
             int ObjectNo = rand() % noOfObject;
             char stuff = rock[ObjectNo];
             maps.setObject(x_,y_-1,stuff);
+            cout << "The alien is moving down" << endl;
+            cout << "The alien is stopped by a rock."<< endl;
+            cout << "Alien's turn end"<< endl;
             break;
         }
         else
@@ -352,6 +365,8 @@ void Alien::moveLeft(Maps &maps)
             maps.setObject(x_, y_, ch_);
             maps.removeObjectLeft(x_, y_, ch_);
             Alien::objectBehaviour(maps,object);
+            cout << "The alien is moving to the left"<< endl;
+            cout << "Alien's turn end"<< endl;
             break;
         }
         else if (object == 'r')
@@ -361,6 +376,9 @@ void Alien::moveLeft(Maps &maps)
             int ObjectNo = rand() % noOfObject;
             char stuff = rock[ObjectNo];
             maps.setObject(x_-1,y_,stuff);
+            cout << "The alien is moving to the left" << endl;
+            cout << "The alien is stopped by a rock."<< endl;
+            cout << "Alien's turn end"<< endl;
             break;
         }
         else
@@ -385,6 +403,8 @@ void Alien::moveRight(Maps &maps)
             maps.setObject(x_, y_, ch_);
             maps.removeObjectRight(x_, y_, ch_);
             Alien::objectBehaviour(maps,object);
+            cout << "The alien is moving to the right"<< endl;
+            cout << "Alien's turn end"<< endl;
             break;
         }
         else if (object == 'r')
@@ -394,6 +414,9 @@ void Alien::moveRight(Maps &maps)
             int ObjectNo = rand() % noOfObject;
             char stuff = rock[ObjectNo];
             maps.setObject(x_+1,y_,stuff);
+            cout << "The alien is moving to the right" << endl;
+            cout << "The alien is stopped by a rock."<< endl;
+            cout << "Alien's turn end"<< endl;
             break;
         }
         else
@@ -489,7 +512,7 @@ Zombies::Zombies()
 {
 }
 
-void Zombies::spawn(Maps &maps)
+void Zombies::spawn(Maps &maps) // placing the zombies on the maps
 {
     for (int i = 1; i <= maps.getZombCount(); ++i)
     {
@@ -512,6 +535,12 @@ char Zombies::getZ() const
 {
     return Z_;
 }
+
+void Zombies::move() const
+{
+
+}
+
 
 void LifeAttackDisplay(Alien &alien)
 {
