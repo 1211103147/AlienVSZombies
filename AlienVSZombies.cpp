@@ -202,7 +202,7 @@ char Maps::getObject(int x,int y)
 {
     return map_[dimY_ - y][x - 1];
 }
-void Maps::setObject(int x, int y, char ch)
+void Maps::setObject(int x, int y, char ch) // set object to srand that's used
 {
     map_[dimY_ - y][x - 1] = ch;
 }
@@ -289,8 +289,6 @@ void Alien::moveUp(Maps &maps)
             maps.setObject(x_, y_, ch_);
             maps.removeObjectUp(x_, y_, ch_);
             Alien::objectBehaviour(maps,object);
-            cout << "The alien is moving up" << endl;
-            cout << "Alien's turn end"<< endl;
             break;
         }
         else if (object == 'r')
@@ -300,9 +298,6 @@ void Alien::moveUp(Maps &maps)
             int ObjectNo = rand() % noOfObject;
             char stuff = rock[ObjectNo];
             maps.setObject(x_,y_+1,stuff);
-            cout << "The alien is moving up" << endl;
-            cout << "The alien is stopped by a rock."<< endl;
-            cout << "Alien's turn end"<< endl;
             break;
         }
         else
@@ -327,8 +322,6 @@ void Alien::moveDown(Maps &maps)
             maps.setObject(x_, y_, ch_);
             maps.removeObjectDown(x_, y_, ch_);
             Alien::objectBehaviour(maps,object);
-            cout << "The alien is moving down" << endl;
-            cout << "Alien's turn end"<< endl;
             break;
         }
         else if (object == 'r')
@@ -338,9 +331,6 @@ void Alien::moveDown(Maps &maps)
             int ObjectNo = rand() % noOfObject;
             char stuff = rock[ObjectNo];
             maps.setObject(x_,y_-1,stuff);
-            cout << "The alien is moving down" << endl;
-            cout << "The alien is stopped by a rock."<< endl;
-            cout << "Alien's turn end"<< endl;
             break;
         }
         else
@@ -365,8 +355,6 @@ void Alien::moveLeft(Maps &maps)
             maps.setObject(x_, y_, ch_);
             maps.removeObjectLeft(x_, y_, ch_);
             Alien::objectBehaviour(maps,object);
-            cout << "The alien is moving to the left"<< endl;
-            cout << "Alien's turn end"<< endl;
             break;
         }
         else if (object == 'r')
@@ -376,9 +364,6 @@ void Alien::moveLeft(Maps &maps)
             int ObjectNo = rand() % noOfObject;
             char stuff = rock[ObjectNo];
             maps.setObject(x_-1,y_,stuff);
-            cout << "The alien is moving to the left" << endl;
-            cout << "The alien is stopped by a rock."<< endl;
-            cout << "Alien's turn end"<< endl;
             break;
         }
         else
@@ -403,8 +388,7 @@ void Alien::moveRight(Maps &maps)
             maps.setObject(x_, y_, ch_);
             maps.removeObjectRight(x_, y_, ch_);
             Alien::objectBehaviour(maps,object);
-            cout << "The alien is moving to the right"<< endl;
-            cout << "Alien's turn end"<< endl;
+            cout << "The alien is moving to the right";
             break;
         }
         else if (object == 'r')
@@ -413,10 +397,7 @@ void Alien::moveRight(Maps &maps)
             int noOfObject = 7;
             int ObjectNo = rand() % noOfObject;
             char stuff = rock[ObjectNo];
-            maps.setObject(x_+1,y_,stuff);
-            cout << "The alien is moving to the right" << endl;
-            cout << "The alien is stopped by a rock."<< endl;
-            cout << "Alien's turn end"<< endl;
+            maps.setObject(x_+1,y_,stuff);cout << "The alien is moving to the right";cout << "The alien is moving to the right";
             break;
         }
         else
@@ -512,15 +493,22 @@ Zombies::Zombies()
 {
 }
 
-void Zombies::spawn(Maps &maps) // placing the zombies on the maps
+void Zombies::spawn(Maps &maps) // to place the zombie the in the board
 {
-    for (int i = 1; i <= maps.getZombCount(); ++i)
-    {
-        char Z_ = '0' + i ;
-        int x1_ = rand() % maps.getDimX();
-        int y1_ = rand() % maps.getDimY();
-        maps.setZombies(x1_,  y1_, Z_);
-    }
+    vector<vector<int>> allzombies; // vector of vectors to store the all zombies
+
+    for (int i = 0; i < maps.getZombCount(); i++) {
+        vector<int> zombie; // making a vector to store x1 and y1 value of the zombies
+        for (int j = 0; j < 1; j++) {
+            char Z_ = '0' + i; // to determined the nth zombies
+            int x1_ = rand() % maps.getDimX();
+            int y1_ = rand() % maps.getDimY();
+            zombie.push_back(x1_); // generate a random x1
+            zombie.push_back(y1_);
+        }
+        allzombies.push_back(zombie); // add the generated array to the vector of arrays
+        maps.setObject(x1_,y1_,Z_);
+}
 }
 
 int Zombies::getX1() const
