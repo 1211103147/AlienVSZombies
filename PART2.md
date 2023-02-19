@@ -2,7 +2,7 @@
 
 ## Video Demo
 
-[Video Demo](https://youtu.be/gNlyIeWqJGU).
+[Video Demo](https://youtu.be/eaBwKwTLEzQ).
 
 
 ## Minimum Requirements
@@ -24,7 +24,8 @@
 
 ## Additional Features
 
-uhh none yet..
+1) Better Main Menu
+2) Wider Board Display
 
 ## Contributions
 
@@ -34,18 +35,24 @@ uhh none yet..
 2. Added the Objects Behavior
 3. Widen the Board Display
 4. Playing His Part on Fixing The Segmetation Error Occured
+5. Added Some Command on the Alien's Movements
+6. Made the Change Arrow and Quit Commands Ingame.
+7. Made the Endgame (though it still have some error)
 
 ### AHMAD HAIKAL BIN EMRAN
 
 1. Edited and Corrected The Alien's and Zombies Movements
 2. Playing His Part on Fixing The Segmetation Error Occured
+3. Playing Part in Detection of Zombies For The Alien in The Game
+4. Added The Command for The Alien's Movement
 
 ### MOHD AZRIY AKMALHAZIM BIN MOHD NAZARIEE
 
-1. Tried To The Movement Of The Zombie But Does Not Successfully Achieve The Execution
+1. Tried To The Implement the Movement Of The Zombie in The Game But Does Not Successfully Achieve The Execution Of The Game
 2. Completed The Explaination Messsage for The Elements and Movements During Gameplay
 3. Edited and Corrected the Alien Movement
 4. Playing His Part on Fixing The Segmetation Error Occured
+5. Playing Part in Detection of Zombies For The Alien in The Game
 
 
 

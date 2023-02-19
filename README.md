@@ -18,6 +18,41 @@ g++ AlienVSZombies.cpp -o game
 
 Run the .exe file. You'll have 4 options which are play the game, load file, change settings, and quit.
 
+__Playing The Game:__
+
+It will display gameboard that consist of Alien, Zombies and Game Objects.
+Alien = 'A'
+Zombies = '1 ~ 9'
+Game Objects consist of 6 different Items;
+>- '^' = Change the direction of Alien upwards
+>- '>' = Change the direction of Alien to the right
+>- '<' = Change the direction of Alien to the left
+>- 'v' = Change the direction of Alien downwards
+>- 'r' = Stop the alien movement and become random Game Objects
+>- 'p' = Give damage to random Zombies
+>- 'h' = Heal Alien 20HP
+
+__Commands for Alien;__
+
+>1. 'up'    = Move Alien upwards
+>2. 'right' = Move Alien to the right
+>3. 'left'  = Move Alien to the left
+>4. 'down'  = Move Alien downwards
+>5. 'arrow' = Switch the direction of an arrow 
+>6. 'help'  = Display all the commands
+>7. 'quit,  = Exit the game 
+
+__Change Settings:__
+
+Default;
+>- Row number     = 5
+>- Column numbers = 15
+>- No of Zombies  = 2 <br><br>
+> You can change the settings for row, column and Zombies. <br>
+> _Note : __Minimum__ number of Zombies is 1 and __Maximum__ is 9_
+
+__Quit:__
+> Exit the game
 ## Progress Log
 
 - [Part 1](PART1.md)
