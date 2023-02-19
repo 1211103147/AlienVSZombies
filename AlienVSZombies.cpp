@@ -95,6 +95,10 @@ private:
     vector<int> zombieatk;
 public:
     Zombies();
+    Zombies (vector<vector<int>> zombieXY)
+    {
+        allzombies = zombieXY;
+    };
     void spawn(Maps &maps);
     void initialZombHP(Maps &maps);
     void initialZombATK(Maps &maps);
@@ -551,12 +555,12 @@ void Alien::objectBehaviour(Maps &board, Zombies &zombie, char object)
         break;
     case 'h':
         cout << "Alien meet 'h'." << endl;
-        cout << "Alien hp increased by 20" << endl;
+        cout << "Alien HP increases by 20 " << endl;
         Alien::changeHP(20);
         break;
     case 'p':
         cout << "Alien meet 'p'." << endl;
-        cout << "Alien attack the Zombie" << i << endl;
+        cout << "Alien attack the Zombie " << i << endl;
         zombie.changeHP(i,-20);
         break;
     default:
@@ -869,9 +873,9 @@ void LifeAttackDisplay(Maps &maps, Alien &alien, Zombies &zombie)
     alienHP = alien.getHP();
     alienATK = alien.getATK();
     
-    cout << "Alien    : "
-         << "Life : " << alienHP << " , "
-         << "Attack:"
+    cout << "Alien   : "
+         << " Life : " << alienHP << " , "
+         << "Attack :"
          << " " << alienATK << " " << endl;
     for (int i = 1; i <= maps.getZombCount(); i++) // to access each zombies
     {
@@ -1081,22 +1085,28 @@ void Command(Maps &board, Alien &attack,Zombies &zombie, bool &end)
 
 void oneTurn(Maps &board, Alien &attack, Zombies &zombies, bool &end)
 {
+    system("cls");
     board.resetTrail();
     board.display();
     LifeAttackDisplay(board,attack,zombies);
     Command(board, attack, zombies, end);
     attack.minusHP(board);
+    system("pause");
     //zombies.move_z(board, attack);
 
     if (attack.getHP() <= 0)
     {
         end = true;
         cout << "The Zombies Has Win the Game..";
+        system("pause");
+        system("cls");
     }
     else if (zombies.getTotalHPZ(board) <= 0)
     {
         end = true;
         cout << "Alien Has Win the Game!!";
+        system("pause");
+        system("cls");
     }
 }
 
@@ -1126,6 +1136,7 @@ int mainMenu()
 
 void changeSettings(Maps &board, Alien &attack)
 {
+    system("cls");
     int row;
     int column;
     int zombie;
@@ -1187,6 +1198,8 @@ void changeSettings(Maps &board, Alien &attack)
     attack.changeZomb(zombie);
     cout << endl
          << "Settings Updated !!" << endl;
+    system("pause");
+    system("cls");
 }
 
 // the main page for the user to change the setting
@@ -1224,6 +1237,7 @@ void settingsMenu(Maps &board, Alien &attack)
             break;
         }
     }
+    system("cls");
 }
 
 // the main loop for the game - options to start game / load / quit etc
@@ -1242,7 +1256,6 @@ void mainLoop(Maps &board, Alien &attack, Zombies &zombies, bool &end)
             while (end == false)
             {
                 oneTurn(board, attack, zombies, end);
-                cout << endl;
             }
             temp = false;
             break;
@@ -1253,6 +1266,7 @@ void mainLoop(Maps &board, Alien &attack, Zombies &zombies, bool &end)
             break;
 
         case 3:
+            system("cls");
             settingsMenu(board, attack);
             cout << endl;
             break;
