@@ -103,6 +103,7 @@ public:
     int getYZ() const;
     int getHPZ(int i);
     int getATKZ(int i);
+    int getTotalHPZ(Maps map);
     char getZ() const;
 
     void changeHP(int i,int hp);
@@ -632,6 +633,15 @@ int Zombies::getATKZ(int i)
     int atk = zombieatk[i].atkz_;
     return atk;  
 }
+int Zombies::getTotalHPZ(Maps maps)
+{
+    int total;
+    for (int i = 1; i <= maps.getZombCount(); i++)
+    {
+        total += zombiehp[i].hpz_;
+    }
+    return total;
+}
 char Zombies::getZ() const
 {
     return Z_;
@@ -1073,6 +1083,17 @@ void oneTurn(Maps &board, Alien &attack, Zombies &zombies, bool &end)
     Command(board, attack, zombies, end);
     attack.minusHP(board);
     //zombies.move_z(board, attack);
+    
+    if (attack.getHP() <= 0)
+    {
+        end = true;
+        cout << "The Zombies Has Win the Game..";
+    }
+    else if (zombies.getTotalHPZ(board) <= 0)
+    {
+        end = true;
+        cout << "Alien Has Win the Game!!";
+    }
 }
 
 // the main menu for the game
