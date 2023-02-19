@@ -50,6 +50,8 @@ public:
     void resetTrail();
 };
 
+class Zombies;
+
 class Alien
 {
 private:
@@ -62,10 +64,10 @@ public:
     Alien();
     void start(Maps &maps);
 
-    void moveUp(Maps &maps);
-    void moveDown(Maps &maps);
-    void moveLeft(Maps &maps);
-    void moveRight(Maps &maps);
+    void moveUp(Maps &maps, Zombies &zombie);
+    void moveDown(Maps &maps, Zombies &zombie);
+    void moveLeft(Maps &maps, Zombies &zombie);
+    void moveRight(Maps &maps, Zombies &zombie);
 
     void changeDim(int dimX, int dimY);
     void changeZomb(int zomB);
@@ -74,7 +76,7 @@ public:
     void resetATK();
     void addATK(int atk);
 
-    void objectBehaviour(Maps &maps, char object);
+    void objectBehaviour(Maps &maps, Zombies &zombie, char object);
 
     int getX() const;
     int getY() const;
@@ -103,8 +105,7 @@ public:
     int getATKZ(int i);
     char getZ() const;
 
-    void changeHP();
-    void changeATK();
+    void changeHP(int i,int hp);
 
     void moveleft_z();
     void moveright_z();
@@ -316,7 +317,7 @@ void Alien::start(Maps &maps)
 
 // alien's movements
 
-void Alien::moveUp(Maps &maps)
+void Alien::moveUp(Maps &maps, Zombies &zombie)
 {
     while (y_ < dimY_)
     {
@@ -330,7 +331,7 @@ void Alien::moveUp(Maps &maps)
             y_ = ++y_;
             maps.setObject(x_, y_, ch_);
             maps.removeObjectUp(x_, y_, ch_);
-            Alien::objectBehaviour(maps, object);
+            Alien::objectBehaviour(maps, zombie, object);
             break;
         }
         else if (object == 'r')
@@ -346,14 +347,14 @@ void Alien::moveUp(Maps &maps)
         }
         else
         {
-            Alien::objectBehaviour(maps, object);
+            Alien::objectBehaviour(maps, zombie, object);
         }
         y_ = ++y_;
         maps.setObject(x_, y_, ch_);
         maps.removeObjectUp(x_, y_, ch_);
     }
 }
-void Alien::moveDown(Maps &maps)
+void Alien::moveDown(Maps &maps, Zombies &zombie)
 {
     while (y_ > 1)
     {
@@ -367,7 +368,7 @@ void Alien::moveDown(Maps &maps)
             y_ = --y_;
             maps.setObject(x_, y_, ch_);
             maps.removeObjectDown(x_, y_, ch_);
-            Alien::objectBehaviour(maps, object);
+            Alien::objectBehaviour(maps, zombie, object);
             break;
         }
         else if (object == 'r')
@@ -383,14 +384,14 @@ void Alien::moveDown(Maps &maps)
         }
         else
         {
-            Alien::objectBehaviour(maps, object);
+            Alien::objectBehaviour(maps, zombie, object);
         }
         y_ = --y_;
         maps.setObject(x_, y_, ch_);
         maps.removeObjectDown(x_, y_, ch_);
     }
 }
-void Alien::moveLeft(Maps &maps)
+void Alien::moveLeft(Maps &maps, Zombies &zombie)
 {
     while (x_ > 1)
     {
@@ -404,7 +405,7 @@ void Alien::moveLeft(Maps &maps)
             x_ = --x_;
             maps.setObject(x_, y_, ch_);
             maps.removeObjectLeft(x_, y_, ch_);
-            Alien::objectBehaviour(maps, object);
+            Alien::objectBehaviour(maps, zombie, object);
             break;
         }
         else if (object == 'r')
@@ -420,14 +421,14 @@ void Alien::moveLeft(Maps &maps)
         }
         else
         {
-            Alien::objectBehaviour(maps, object);
+            Alien::objectBehaviour(maps, zombie, object);
         }
         x_ = --x_;
         maps.setObject(x_, y_, ch_);
         maps.removeObjectLeft(x_, y_, ch_);
     }
 }
-void Alien::moveRight(Maps &maps)
+void Alien::moveRight(Maps &maps, Zombies &zombie)
 {
     while (x_ < dimX_)
     {
@@ -441,7 +442,7 @@ void Alien::moveRight(Maps &maps)
             x_ = ++x_;
             maps.setObject(x_, y_, ch_);
             maps.removeObjectRight(x_, y_, ch_);
-            Alien::objectBehaviour(maps, object);
+            Alien::objectBehaviour(maps, zombie, object);
             break;
         }
         else if (object == 'r')
@@ -457,7 +458,7 @@ void Alien::moveRight(Maps &maps)
         }
         else
         {
-            Alien::objectBehaviour(maps, object);
+            Alien::objectBehaviour(maps, zombie, object);
         }
         x_ = ++x_;
         maps.setObject(x_, y_, ch_);
@@ -521,34 +522,37 @@ int Alien::getATK() const
 
 // object's behaviours within the board;
 
-void Alien::objectBehaviour(Maps &board, char object)
+void Alien::objectBehaviour(Maps &board, Zombies &zombie, char object)
 {
+    int i = rand() % board.getZombCount();
+    i = i + 1;
     switch (object)
     {
     case '^':
         Alien::addATK(20);
         cout << "Alien meet '^'." << endl;
-        Alien::moveUp(board);
+        Alien::moveUp(board,zombie);
         break;
     case 'v':
         Alien::addATK(20);
         cout << "Alien meet 'v'." << endl;
-        Alien::moveDown(board);
+        Alien::moveDown(board,zombie);
         break;
     case '<':
         Alien::addATK(20);
         cout << "Alien meet '<'." << endl;
-        Alien::moveLeft(board);
+        Alien::moveLeft(board,zombie);
         break;
     case '>':
         Alien::addATK(20);
         cout << "Alien meet '>'." << endl;
-        Alien::moveRight(board);
+        Alien::moveRight(board,zombie);
         break;
     case 'h':
         Alien::changeHP(20);
+        break;
     case 'p':
-        /* code */
+        zombie.changeHP(i,-20);
         break;
     default:
         break;
@@ -631,6 +635,11 @@ int Zombies::getATKZ(int i)
 char Zombies::getZ() const
 {
     return Z_;
+}
+
+void Zombies::changeHP(int i,int hp)
+{
+    zombiehp[i].hpz_ = zombiehp[i].hpz_ + hp;
 }
 
 // movements for the zombies to change the x and y values
@@ -927,7 +936,7 @@ void LoadMenu()
 
 // user's commands for the gameplay
 
-void Command(Maps &board, Alien &attack, bool &end)
+void Command(Maps &board, Alien &attack,Zombies &zombie, bool &end)
 {
     cout << "Command: ";
     string command;
@@ -936,22 +945,22 @@ void Command(Maps &board, Alien &attack, bool &end)
     if (command.compare("up") == 0)
     {
         cout << "The alien is moving upward." << endl;
-        attack.moveUp(board);
+        attack.moveUp(board,zombie);
     }
     else if (command.compare("down") == 0)
     {
         cout << "The alien is moving downward." << endl;
-        attack.moveDown(board);
+        attack.moveDown(board,zombie);
     }
     else if (command.compare("left") == 0)
     {
         cout << "The alien is moving to the left." << endl;
-        attack.moveLeft(board);
+        attack.moveLeft(board,zombie);
     }
     else if (command.compare("right") == 0)
     {
         cout << "The alien is moving to the right." << endl;
-        attack.moveRight(board);
+        attack.moveRight(board,zombie);
     }
     else if (command.compare("arrow") == 0)
     {
@@ -1061,7 +1070,7 @@ void oneTurn(Maps &board, Alien &attack, Zombies &zombies, bool &end)
     board.resetTrail();
     board.display();
     LifeAttackDisplay(board,attack,zombies);
-    Command(board, attack, end);
+    Command(board, attack, zombies, end);
     attack.minusHP(board);
     //zombies.move_z(board, attack);
 }
