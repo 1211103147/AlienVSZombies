@@ -574,17 +574,20 @@ void Zombies::spawn(Maps &maps) // to place the zombie the in the board
     }
 }
 
-int Zombies::getZombHP(Maps &maps)
+int Zombies::getZombHP(Maps& maps)
 {
-    vector<Zombies> zombie;
+    vector<Zombies> zombies(maps.getZombCount());
     int hpz = 100;
-    zombie.resize(maps.getZombCount());
-    for (int i = 0; i < maps.getZombCount(); i++) // to access each zombies in the vector
+    for (int i = 0; i < maps.getZombCount(); i++)
     {
-        zombie[i].hpz_ += hpz;
+        zombies[i].hpz_ = hpz;
     }
-
-    return hpz_;
+    int totalHP = 0;
+    for (int i = 0; i < maps.getZombCount(); i++)
+    {
+        totalHP += zombies[i].hpz_;
+    }
+    return totalHP;
 }
 
 int Zombies::getZombATK(Maps &maps)
@@ -844,7 +847,7 @@ void LifeAttackDisplay(Maps &maps, Alien &alien, Zombies &zombie)
     for (int i = 0; i < maps.getZombCount(); i++) // to access each zombies
     {
         cout << "Zombie " << i + 1 << ": "
-             << " Life : " << zombHP << " " << "Attack: " << zombATK << endl;
+             << " Life : " << zombHP << " , " << "Attack: " << zombATK << endl;
     }
 }
 
