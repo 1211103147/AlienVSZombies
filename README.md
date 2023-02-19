@@ -4,7 +4,7 @@ Alien vs Zombie is a simplified, text-based version of the game named Alien Path
 
 ![Alien vs Zombie Gameplay](gameplay.png)
 
-[Video Demo](https://youtu.be/gNlyIeWqJGU).
+[Video Demo](https://youtu.be/eaBwKwTLEzQ).
 
 ## Compilation Instructions
 

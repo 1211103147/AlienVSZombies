@@ -14,13 +14,12 @@
 3. Save/Load
 4. Game Object Behaviour
 5. Explaination Messages During Gameplay
+6. Alien Behaviour
+7. Life and Attack Display
 
 ### To Do
 
-1. Alien Behavior
-2. Zombie Behaviour
-3. Life and Attack Display
-
+1. Zombie Behaviour
 
 ## Additional Features
 
@@ -60,6 +59,7 @@
 
 1. Problem  : Alien movement error where after the initial move, the next move start from the starting position again.
    Solution : I spent 1 hour or more just to realise I forgot to put an ampersand(&) at the alien parameter at the function oneTurn().
-2. Problem : We overcame segmentation fault frequently.
-   Solution : We tried to overlook again into the vector dimentions
-
+2. Problem  : We overcame segmentation fault frequently.
+   Solution : We tried to overlook again into the vector dimensions.
+3. Problem  : We encountered a lot of problems regarding the zombie behaviour such as their hitpoints, cannot disappear when hp become 0 and many more.
+   Solution : No solution, we end our project here. 
