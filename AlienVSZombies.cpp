@@ -95,10 +95,6 @@ private:
     vector<int> zombieatk;
 public:
     Zombies();
-    Zombies (vector<vector<int>> zombieXY)
-    {
-        allzombies = zombieXY;
-    };
     void spawn(Maps &maps);
     void initialZombHP(Maps &maps);
     void initialZombATK(Maps &maps);
@@ -555,12 +551,12 @@ void Alien::objectBehaviour(Maps &board, Zombies &zombie, char object)
         break;
     case 'h':
         cout << "Alien meet 'h'." << endl;
-        cout << "Alien HP increases by 20 " << i << endl;
+        cout << "Alien hp increased by 20" << endl;
         Alien::changeHP(20);
         break;
     case 'p':
         cout << "Alien meet 'p'." << endl;
-        cout << "Alien attack the Zombie " << i << endl;
+        cout << "Alien attack the Zombie" << i << endl;
         zombie.changeHP(i,-20);
         break;
     default:
