@@ -47,6 +47,7 @@ public:
     char detectObjectDown(int x, int y);
     char detectObjectLeft(int x, int y);
     char detectObjectRight(int x, int y);
+    void resetTrail();
 };
 
 class Alien
@@ -269,6 +270,23 @@ char Maps::detectObjectRight(int x, int y)
     int X = x + 1;
     int Y = y;
     return map_[dimY_ - Y][X - 1];
+}
+void Maps::resetTrail() // reset trail with any random game objects(expect trail)
+{
+    char objects[] = {'^', '<', '>', 'v', 'h', 'p', 'r', ' ', ' ', ' ', ' '};
+    int noOfObjects = 11;
+
+    for (int i = 0; i < dimY_; ++i)
+    {
+        for (int j = 0; j < dimX_; ++j)
+        {
+            if (map_[i][j] == '.')
+            {
+            int objNo = rand() % noOfObjects;
+            map_[i][j] = objects[objNo];
+            }
+        }
+    }
 }
 
 Alien::Alien()
@@ -651,158 +669,158 @@ void Zombies::movedown_z()
 
 // random movements for the zombies to change the values of char and setting the objects
 
-void Zombies::move_z(Maps &maps, Alien &Alien)
-{   
+// void Zombies::move_z(Maps &maps, Alien &Alien)
+// {   
 
-    for (int i = 1; i < size(allzombies); i++)
-    {
-        for (int j = 0; j < size(allzombies[i]); j++)
-        {
-            int random = rand() % 4;
+//     for (int i = 1; i < size(allzombies); i++)
+//     {
+//         for (int j = 0; j < size(allzombies[i]); j++)
+//         {
+//             int random = rand() % 4;
 
-            if (random = 1)
-            {   
-                char objectleft = maps.detectObjectLeft(xz_, yz_);
-                if (xz_ > 0)
-                {
-                    moveleft_z();
-                    maps.setObject(xz_, yz_, allzombies[i][1]);
-                    maps.removeObjectLeft(xz_, yz_, allzombies[i][1]);
-                }
+//             if (random = 1)
+//             {   
+//                 char objectleft = maps.detectObjectLeft(xz_, yz_);
+//                 if (xz_ > 0)
+//                 {
+//                     moveleft_z();
+//                     maps.setObject(xz_, yz_, allzombies[i][1]);
+//                     maps.removeObjectLeft(xz_, yz_, allzombies[i][1]);
+//                 }
 
-                else
-                {
-                    cout << "The zombie encounter wall. It stoped moving" << endl;
-                    cout << "Zombie " << allzombies[i][1] << "'s ended" << endl;
-                }
-            }
+//                 else
+//                 {
+//                     cout << "The zombie encounter wall. It stoped moving" << endl;
+//                     cout << "Zombie " << allzombies[i][1] << "'s ended" << endl;
+//                 }
+//             }
 
-            else if (random = 2)
-            {
-                char objectright = maps.detectObjectRight(xz_, yz_);
-                if (xz_ < maps.getDimX())
-                {
-                    moveright_z();
-                    maps.setObject(xz_, yz_, allzombies[i][1]);
-                    maps.removeObjectRight(xz_, yz_, allzombies[i][1]);
-                }
+//             else if (random = 2)
+//             {
+//                 char objectright = maps.detectObjectRight(xz_, yz_);
+//                 if (xz_ < maps.getDimX())
+//                 {
+//                     moveright_z();
+//                     maps.setObject(xz_, yz_, allzombies[i][1]);
+//                     maps.removeObjectRight(xz_, yz_, allzombies[i][1]);
+//                 }
 
-                else
-                {
-                    cout << "The zombie encounter wall. It stoped moving" << endl;
-                    cout << "Zombie " << allzombies[i][1] << "'s ended"<< endl;
-                }
-            }
+//                 else
+//                 {
+//                     cout << "The zombie encounter wall. It stoped moving" << endl;
+//                     cout << "Zombie " << allzombies[i][1] << "'s ended"<< endl;
+//                 }
+//             }
 
-            else if (random = 3)
-            {
-                char objectdown = maps.detectObjectDown(xz_, yz_);
-                movedown_z();
-                if (yz_ > 0)
-                {
-                    movedown_z();
-                    maps.setObject(xz_, yz_, allzombies[i][1]);
-                    maps.removeObjectDown(xz_, yz_, allzombies[i][1]);
-                }
+//             else if (random = 3)
+//             {
+//                 char objectdown = maps.detectObjectDown(xz_, yz_);
+//                 movedown_z();
+//                 if (yz_ > 0)
+//                 {
+//                     movedown_z();
+//                     maps.setObject(xz_, yz_, allzombies[i][1]);
+//                     maps.removeObjectDown(xz_, yz_, allzombies[i][1]);
+//                 }
 
-                else
-                {
-                    cout << "The zombie encounter wall. It stoped moving" << endl;
-                    cout << "Zombie " << allzombies[i][1] << "'s ended"<< endl;
-                }
-            }
+//                 else
+//                 {
+//                     cout << "The zombie encounter wall. It stoped moving" << endl;
+//                     cout << "Zombie " << allzombies[i][1] << "'s ended"<< endl;
+//                 }
+//             }
 
-            else 
-            {
-                char objectup = maps.detectObjectUp(xz_, yz_);
-                if (yz_ < maps.getDimY())
-                {
-                    moveup_z();
-                    maps.setObject(xz_, yz_, allzombies[i][1]);
-                    maps.removeObjectUp(xz_, yz_, allzombies[i][1]);
-                }
+//             else 
+//             {
+//                 char objectup = maps.detectObjectUp(xz_, yz_);
+//                 if (yz_ < maps.getDimY())
+//                 {
+//                     moveup_z();
+//                     maps.setObject(xz_, yz_, allzombies[i][1]);
+//                     maps.removeObjectUp(xz_, yz_, allzombies[i][1]);
+//                 }
 
-                else
-                {
-                    cout << "The zombie encounter wall. It stoped moving" << endl;
-                    cout << "Zombie " << allzombies[i][1] << "'s turn ended"<< endl;
-                }
-            }
+//                 else
+//                 {
+//                     cout << "The zombie encounter wall. It stoped moving" << endl;
+//                     cout << "Zombie " << allzombies[i][1] << "'s turn ended"<< endl;
+//                 }
+//             }
 
-            // else if (random = 5)
-            // {
-            //     char objectz = maps.detectObjectUp(xz_, yz_);
-            //     char objectz = maps.detectObjectLeft(xz_, yz_);
-            //     if (objectz != '-' || objectz != '+' || objectz != '|')
-            //     {
-            //         moveupleft_z();
-            //         maps.setObject(xz_, yz_, allzombies[i][1]);
-            //         maps.removeObjectUp(xz_, yz_, allzombies[i][1]);   
-            //     }
+//             // else if (random = 5)
+//             // {
+//             //     char objectz = maps.detectObjectUp(xz_, yz_);
+//             //     char objectz = maps.detectObjectLeft(xz_, yz_);
+//             //     if (objectz != '-' || objectz != '+' || objectz != '|')
+//             //     {
+//             //         moveupleft_z();
+//             //         maps.setObject(xz_, yz_, allzombies[i][1]);
+//             //         maps.removeObjectUp(xz_, yz_, allzombies[i][1]);   
+//             //     }
 
-            //     else
-            //     {
-            //         cout << "The zombie encounter wall. It stoped moving" << endl;
-            //         cout << "Zombie " << allzombies[i][1] << "'s ended"<< endl;
-            //     }
-            // }
+//             //     else
+//             //     {
+//             //         cout << "The zombie encounter wall. It stoped moving" << endl;
+//             //         cout << "Zombie " << allzombies[i][1] << "'s ended"<< endl;
+//             //     }
+//             // }
 
-            // else if (random = 6)
-            // {
-            //     char objectz = maps.detectObjectUp(xz_, yz_);
-            //     char objectz = maps.detectObjectRight(xz_, yz_);
-            //     if (objectz != '-' || objectz != '+' || objectz != '|')
-            //     {
-            //         moveupright_z();
-            //         maps.setObject(xz_, yz_, allzombies[i][1]);
-            //         maps.removeObjectUp(xz_, yz_, allzombies[i][1]);
-            //     }
+//             // else if (random = 6)
+//             // {
+//             //     char objectz = maps.detectObjectUp(xz_, yz_);
+//             //     char objectz = maps.detectObjectRight(xz_, yz_);
+//             //     if (objectz != '-' || objectz != '+' || objectz != '|')
+//             //     {
+//             //         moveupright_z();
+//             //         maps.setObject(xz_, yz_, allzombies[i][1]);
+//             //         maps.removeObjectUp(xz_, yz_, allzombies[i][1]);
+//             //     }
 
-            //     else
-            //     {
-            //         cout << "The zombie encounter wall. It stoped moving" << endl;
-            //         cout << "Zombie " << allzombies[i][1] << "'s ended"<< endl;
-            //     }
-            // }
+//             //     else
+//             //     {
+//             //         cout << "The zombie encounter wall. It stoped moving" << endl;
+//             //         cout << "Zombie " << allzombies[i][1] << "'s ended"<< endl;
+//             //     }
+//             // }
 
-            // else if (random = 7)
-            // {
-            //     char objectz = maps.detectObjectDown(xz_, yz_);
-            //     char objectz = maps.detectObjectLeft(xz_, yz_);
-            //     if (objectz != '-' || objectz != '+' || objectz != '|')
-            //     {
-            //         movedownleft_z();
-            //         maps.setObject(xz_, yz_, allzombies[i][1]);
-            //         maps.removeObjectUp(xz_, yz_, allzombies[i][1]);
-            //     }
+//             // else if (random = 7)
+//             // {
+//             //     char objectz = maps.detectObjectDown(xz_, yz_);
+//             //     char objectz = maps.detectObjectLeft(xz_, yz_);
+//             //     if (objectz != '-' || objectz != '+' || objectz != '|')
+//             //     {
+//             //         movedownleft_z();
+//             //         maps.setObject(xz_, yz_, allzombies[i][1]);
+//             //         maps.removeObjectUp(xz_, yz_, allzombies[i][1]);
+//             //     }
 
-            //     else
-            //     {
-            //         cout << "The zombie encounter wall. It stoped moving" << endl;
-            //         cout << "Zombie " << allzombies[i][1] << "'s ended"<< endl;
-            //     }
-            // }
+//             //     else
+//             //     {
+//             //         cout << "The zombie encounter wall. It stoped moving" << endl;
+//             //         cout << "Zombie " << allzombies[i][1] << "'s ended"<< endl;
+//             //     }
+//             // }
 
-            // else
-            // {
-            //     char objectz = maps.detectObjectDown(xz_, yz_);
-            //     char objectz = maps.detectObjectRight(xz_, yz_);
-            //     if (objectz != '-' || objectz != '+' || objectz != '|')
-            //     {
-            //         movedownright_z();
-            //         maps.setObject(xz_, yz_, allzombies[i][1]);
-            //         maps.removeObjectUp(xz_, yz_, allzombies[i][1]);
-            //     }
+//             // else
+//             // {
+//             //     char objectz = maps.detectObjectDown(xz_, yz_);
+//             //     char objectz = maps.detectObjectRight(xz_, yz_);
+//             //     if (objectz != '-' || objectz != '+' || objectz != '|')
+//             //     {
+//             //         movedownright_z();
+//             //         maps.setObject(xz_, yz_, allzombies[i][1]);
+//             //         maps.removeObjectUp(xz_, yz_, allzombies[i][1]);
+//             //     }
 
-            //     else
-            //     {
-            //         cout << "The zombie encounter wall. It stoped moving" << endl;
-            //         cout << "Zombie " << allzombies[i][1] << "'s ended"<< endl;
-            //     }
-            //}
-        }
-    }
-}
+//             //     else
+//             //     {
+//             //         cout << "The zombie encounter wall. It stoped moving" << endl;
+//             //         cout << "Zombie " << allzombies[i][1] << "'s ended"<< endl;
+//             //     }
+//             //}
+//         }
+//     }
+// }
 
 // display attributes i.e health, attack, range, for the alien and also zombies
 
@@ -1031,6 +1049,7 @@ void Command(Maps &board, Alien &attack, bool &end)
 
 void oneTurn(Maps &board, Alien &attack, Zombies &zombies, bool &end)
 {
+    board.resetTrail();
     board.display();
     LifeAttackDisplay(board,attack,zombies);
     Command(board, attack, end);
@@ -1179,7 +1198,7 @@ void mainLoop(Maps &board, Alien &attack, Zombies &zombies, bool &end)
             {
                 oneTurn(board, attack, zombies, end);
                 cout << endl;
-                zombies.move_z(board, attack);
+                //zombies.move_z(board, attack);
                 cout << endl;
             }
             temp = false;
