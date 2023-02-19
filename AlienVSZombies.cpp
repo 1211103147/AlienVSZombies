@@ -89,16 +89,23 @@ private:
     int xz_, yz_, hpz_, atkz_;
     char Z_;
     vector<vector<int>> allzombies; // vector of vectors to store the all zombies
+    vector<Zombies> zombiehp;
+    vector<Zombies> zombieatk;
 public:
     Zombies();
     void spawn(Maps &maps);
-    int getZombHP(Maps &maps);
-    int getZombATK(Maps &maps);
+    void initialZombHP(Maps &maps);
+    void initialZombATK(Maps &maps);
 
     int getXZ() const;
     int getYZ() const;
-    int getHPZ() const;
+    int getHPZ(int i);
+    int getATKZ(int i);
     char getZ() const;
+
+    void changeHP();
+    void changeATK();
+
     void moveleft_z();
     void moveright_z();
     void movedown_z();
@@ -577,35 +584,28 @@ void Zombies::spawn(Maps &maps) // to place the zombie the in the board
         }
         allzombies.push_back(zombie); // add the generated array to the vector of arrays
     }
+    initialZombHP(maps);
+    initialZombATK(maps);
 }
 
-int Zombies::getZombHP(Maps& maps)
+void Zombies::initialZombHP(Maps& maps)
 {
-    vector<Zombies> zombies(maps.getZombCount());
+    zombiehp.resize(maps.getZombCount());
     int hpz = 100;
-    for (int i = 0; i < maps.getZombCount(); i++)
+    for (int i = 1; i <= maps.getZombCount(); i++)
     {
-        zombies[i].hpz_ = hpz;
+        zombiehp[i].hpz_ = hpz;
     }
-    int totalHP = 0;
-    for (int i = 0; i < maps.getZombCount(); i++)
-    {
-        totalHP += zombies[i].hpz_;
-    }
-    return totalHP;
 }
 
-int Zombies::getZombATK(Maps &maps)
+void Zombies::initialZombATK(Maps &maps)
 {
-    vector<Zombies> zombie;
+    zombieatk.resize(maps.getZombCount());
     int atkz = 20;
-    zombie.resize(maps.getZombCount());
-    for (int i = 0; i < maps.getZombCount(); i++) // to access each zombies in the vector
+    for (int i = 1; i <= maps.getZombCount(); i++) // to access each zombies in the vector
     {
-        zombie[i].atkz_ += atkz;
+        zombieatk[i].atkz_ = atkz;
     }
-
-    return atkz_;
 }
 
 // get and set the x's and y's positional value for the zombies
@@ -618,9 +618,15 @@ int Zombies::getYZ() const
 {
     return yz_;
 }
-int Zombies::getHPZ() const
+int Zombies::getHPZ(int i)
 {
-    return hpz_;
+    int hp = zombiehp[i].hpz_;
+    return hp;
+}
+int Zombies::getATKZ(int i)
+{
+    int atk = zombieatk[i].atkz_;
+    return atk;  
 }
 char Zombies::getZ() const
 {
@@ -836,23 +842,18 @@ void LifeAttackDisplay(Maps &maps, Alien &alien, Zombies &zombie)
 {
     int alienHP;
     int alienATK;
-    int zombHP;
-    int zombATK;
 
     alienHP = alien.getHP();
     alienATK = alien.getATK();
-    zombHP = zombie.getZombHP(maps);
-    zombATK = zombie.getZombATK(maps);
     
-
     cout << "Alien    : "
          << "Life : " << alienHP << " , "
          << "Attack:"
          << " " << alienATK << " " << endl;
-    for (int i = 0; i < maps.getZombCount(); i++) // to access each zombies
+    for (int i = 1; i <= maps.getZombCount(); i++) // to access each zombies
     {
-        cout << "Zombie " << i + 1 << ": "
-             << " Life : " << zombHP << " , " << "Attack: " << zombATK << endl;
+        cout << "Zombie " << i << ": "
+             << " Life : " << zombie.getHPZ(i) << " , " << "Attack : " << zombie.getATKZ(i) << endl;
     }
 }
 
@@ -1061,6 +1062,8 @@ void oneTurn(Maps &board, Alien &attack, Zombies &zombies, bool &end)
     board.display();
     LifeAttackDisplay(board,attack,zombies);
     Command(board, attack, end);
+    attack.minusHP(board);
+    //zombies.move_z(board, attack);
 }
 
 // the main menu for the game
@@ -1205,9 +1208,6 @@ void mainLoop(Maps &board, Alien &attack, Zombies &zombies, bool &end)
             while (end == false)
             {
                 oneTurn(board, attack, zombies, end);
-                attack.minusHP(board);
-                cout << endl;
-                //zombies.move_z(board, attack);
                 cout << endl;
             }
             temp = false;
