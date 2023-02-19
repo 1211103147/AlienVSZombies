@@ -70,6 +70,7 @@ public:
     void changeDim(int dimX, int dimY);
     void changeZomb(int zomB);
     void changeHP(int hp);
+    void minusHP(Maps &maps7);
     void resetATK();
     void addATK(int atk);
 
@@ -476,6 +477,10 @@ void Alien::changeHP(int hp)
     {
         hp_ = 200;
     }
+}
+void Alien::minusHP(Maps &maps)
+{
+    hp_ = hp_ - ( 5 * maps.getZombCount());
 }
 void Alien::resetATK()
 {
@@ -1200,6 +1205,7 @@ void mainLoop(Maps &board, Alien &attack, Zombies &zombies, bool &end)
             while (end == false)
             {
                 oneTurn(board, attack, zombies, end);
+                attack.minusHP(board);
                 cout << endl;
                 //zombies.move_z(board, attack);
                 cout << endl;
